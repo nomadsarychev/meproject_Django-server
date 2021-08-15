@@ -1559,7 +1559,7 @@
   var CLASS_NAME_DROPRIGHT = 'dropright';
   var CLASS_NAME_DROPLEFT = 'dropleft';
   var CLASS_NAME_MENURIGHT = 'dropdown-menu-right';
-  var CLASS_NAME_POSITION_STATIC = 'position-static';
+  var CLASS_NAME_POSITION_STATIC = 'position-newstatic';
   var SELECTOR_DATA_TOGGLE$2 = '[data-toggle="dropdown"]';
   var SELECTOR_FORM_CHILD = '.dropdown form';
   var SELECTOR_MENU = '.dropdown-menu';
@@ -1666,7 +1666,7 @@
           if (typeof this._config.reference.jquery !== 'undefined') {
             referenceElement = this._config.reference[0];
           }
-        } // If boundary is not `scrollParent`, then set position to `static`
+        } // If boundary is not `scrollParent`, then set position to `newstatic`
         // to allow the menu to "escape" the scroll parent's boundaries
         // https://github.com/twbs/bootstrap/issues/24251
 
@@ -1821,9 +1821,9 @@
             boundariesElement: this._config.boundary
           }
         }
-      }; // Disable Popper.js if we have a static display
+      }; // Disable Popper.js if we have a newstatic display
 
-      if (this._config.display === 'static') {
+      if (this._config.display === 'newstatic') {
         popperConfig.modifiers.applyStyle = {
           enabled: false
         };
@@ -2078,7 +2078,7 @@
   var CLASS_NAME_OPEN = 'modal-open';
   var CLASS_NAME_FADE$1 = 'fade';
   var CLASS_NAME_SHOW$3 = 'show';
-  var CLASS_NAME_STATIC = 'modal-static';
+  var CLASS_NAME_STATIC = 'modal-newstatic';
   var SELECTOR_DIALOG = '.modal-dialog';
   var SELECTOR_MODAL_BODY = '.modal-body';
   var SELECTOR_DATA_TOGGLE$3 = '[data-toggle="modal"]';
@@ -2241,7 +2241,7 @@
     _proto._triggerBackdropTransition = function _triggerBackdropTransition() {
       var _this3 = this;
 
-      if (this._config.backdrop === 'static') {
+      if (this._config.backdrop === 'newstatic') {
         var hideEventPrevented = $__default['default'].Event(EVENT_HIDE_PREVENTED);
         $__default['default'](this._element).trigger(hideEventPrevented);
 
