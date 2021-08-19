@@ -9,6 +9,9 @@ class ProductCategory(models.Model):
     description = models.TextField(blank=True,
                                    null=True)  # text, параметры говорят что поле может быть не заполнено.
 
+    def __str__(self):
+        return self.name
+
 
 class Product(models.Model):
     name = models.CharField(max_length=256)
@@ -19,6 +22,10 @@ class Product(models.Model):
                                 default=0)  # числа, 1 занчение сколько цифр до запятой,2 после запятой ,3 по умолчанию 0
     quantity = models.PositiveIntegerField(default=0)  # только положительные зачения
     category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE)  # внешний ключ, удаление каскадом.
+
+    def __str__(self):
+        return f'{self.name} | {self.category}'
+
 
 #   миграция - конвертация кода python в sql код.
 #   python manage.py makemigrations
