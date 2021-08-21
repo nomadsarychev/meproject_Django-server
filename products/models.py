@@ -26,7 +26,6 @@ class Product(models.Model):
     def __str__(self):
         return f'{self.name} | {self.category}'
 
-
 #   миграция - конвертация кода python в sql код.
 #   python manage.py makemigrations
 #   python manage.py migrate
