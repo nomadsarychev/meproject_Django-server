@@ -35,3 +35,7 @@ def registration(request):
         form = UserRegistrationForm()
     context = {'title': 'Geekshop - Регитсрация', 'form': form}
     return render(request, 'users/registration.html', context)
+
+def logout(request):
+    auth.logout(request)
+    return HttpResponseRedirect(reverse('index'))
