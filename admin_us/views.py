@@ -28,7 +28,7 @@ def admin_users(request):
     return render(request, 'admin_us/admin_users.html', context)
 
 
-def admin_update_delete(request, id):
+def admin_update(request, id):
     selected_user = User.objects.get(id=id)
     if request.method == 'POST':
         form = UserAdminProfileForm(instance=selected_user, files=request.FILES, data=request.POST)
@@ -38,4 +38,5 @@ def admin_update_delete(request, id):
     else:
         form = UserAdminProfileForm(instance=selected_user)
     context = {'title': 'GeekShop - Редактирвоание пользователя', 'selected_user': selected_user, 'form': form}
-    return render(request, 'admin_us/admin_update_delete.html', context)
+    return render(request, 'admin_us/admin_update.html', context)
+
