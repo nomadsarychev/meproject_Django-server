@@ -40,3 +40,9 @@ def admin_update(request, id):
     context = {'title': 'GeekShop - Редактирвоание пользователя', 'selected_user': selected_user, 'form': form}
     return render(request, 'admin_us/admin_update.html', context)
 
+
+def admin_delete(request, id):
+    user = User.objects.get(id=id)
+    user.is_active=False
+    user.save()
+    return HttpResponseRedirect(reverse('admin_us:admin_users'))
