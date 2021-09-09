@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponseRedirect
-from django.urls import  reverse_lazy
+from django.urls import reverse_lazy
 from django.contrib.auth.decorators import user_passes_test
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -10,7 +10,7 @@ from users.models import User
 from admin_us.forms import UserRegistrationForm, UserAdminProfileForm
 
 
-@user_passes_test(lambda u: u.is_staff)
+user_passes_test(lambda u: u.is_staff)
 def index(request):
     context = {'title': 'GeekShop - Admin'}
     return render(request, 'admin_us/index.html', context)
@@ -50,7 +50,7 @@ class UserListView(ListView):
         context = super(UserListView, self).get_context_data(**kwargs)
         context['title'] = 'GeekShop - Админ | Пользователи'
         return context
-    
+
     @method_decorator(user_passes_test(lambda u: u.is_staff))
     def dispatch(self, request, *args, **kwargs):
         return super(UserListView, self).dispatch(request, *args, **kwargs)
@@ -86,9 +86,9 @@ class UserUpdateView(UpdateView):
 class UserDeleteView(DeleteView):
     model = User
     template_name = 'admin_us/admin_update.html'
-    success_url = reverse_lazy('admin_us:admin_users')
+    success_url = reverse_lazy('admins:admin_users')
 
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
-        self.object.safe_delete()
+        self.object.is_activ=False
         return HttpResponseRedirect(self.get_success_url())
