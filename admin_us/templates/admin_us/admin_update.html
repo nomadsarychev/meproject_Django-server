@@ -3,9 +3,9 @@
 {% block content %}
     <main>
         <div class="container-fluid">
-            <h1 class="mt-4">Редактирование пользователя | {{ selected_user.username }}</h1>
+            <h1 class="mt-4">Редактирование пользователя | {{ object.username }}</h1>
             <div class="card-body">
-                <form action="{% url 'admin_us:admin_update' selected_user.id %}" method="post"
+                <form action="{% url 'admin_us:admin_update' object.id %}" method="post"
                       enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="form-row">
@@ -50,7 +50,7 @@
                 </form>
                 <div class="row">
                     <div class="col-lg-12" style="margin-top: 33px;">
-                        <a class="btn btn-danger btn-block" href="{% url 'admin_us:admin_delete' selected_user.id %}">Удаление</a>
+                        <a class="btn btn-danger btn-block" href="{% url 'admin_us:admin_delete' object.id %}">Удаление</a>
                     </div>
                 </div>
             </div>

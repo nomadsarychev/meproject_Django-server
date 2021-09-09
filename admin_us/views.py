@@ -2,7 +2,7 @@ from django.shortcuts import render, HttpResponseRedirect
 from django.urls import reverse,reverse_lazy
 from django.contrib.auth.decorators import user_passes_test
 from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 
 from users.models import User
 from admin_us.forms import UserRegistrationForm, UserAdminProfileForm
@@ -42,18 +42,25 @@ class UserListView(ListView):
     model = User
     template_name = 'admin_us/admin_users.html'
 
-@user_passes_test(lambda u: u.is_staff)
-def admin_update(request, id):
-    selected_user = User.objects.get(id=id)
-    if request.method == 'POST':
-        form = UserAdminProfileForm(instance=selected_user, files=request.FILES, data=request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('admin_us:admin_users'))
-    else:
-        form = UserAdminProfileForm(instance=selected_user)
-    context = {'title': 'GeekShop - Редактирвоание пользователя', 'selected_user': selected_user, 'form': form}
-    return render(request, 'admin_us/admin_update.html', context)
+# @user_passes_test(lambda u: u.is_staff)
+# def admin_update(request, id):
+#     selected_user = User.objects.get(id=id)
+#     if request.method == 'POST':
+#         form = UserAdminProfileForm(instance=selected_user, files=request.FILES, data=request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return HttpResponseRedirect(reverse('admin_us:admin_users'))
+#     else:
+#         form = UserAdminProfileForm(instance=selected_user)
+#     context = {'title': 'GeekShop - Редактирвоание пользователя', 'selected_user': selected_user, 'form': form}
+#     return render(request, 'admin_us/admin_update.html', context)
+
+class UserUpdateView(UpdateView):
+    model = User
+    template_name = 'admin_us/admin_update.html'
+    form_class = UserAdminProfileForm
+    success_url = reverse_lazy('admin_us:admin_users')
+
 
 @user_passes_test(lambda u: u.is_staff)
 def admin_delete(request, id):
