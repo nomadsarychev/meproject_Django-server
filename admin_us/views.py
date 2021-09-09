@@ -1,6 +1,5 @@
 from django.shortcuts import render, HttpResponseRedirect
 from django.urls import reverse_lazy
-from django.contrib.auth.decorators import user_passes_test
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import user_passes_test
@@ -10,7 +9,7 @@ from users.models import User
 from admin_us.forms import UserRegistrationForm, UserAdminProfileForm
 
 
-user_passes_test(lambda u: u.is_staff)
+@user_passes_test(lambda u: u.is_staff)
 def index(request):
     context = {'title': 'GeekShop - Admin'}
     return render(request, 'admin_us/index.html', context)
@@ -90,5 +89,5 @@ class UserDeleteView(DeleteView):
 
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
-        self.object.is_activ=False
+        self.object.safe_delete()
         return HttpResponseRedirect(self.get_success_url())
