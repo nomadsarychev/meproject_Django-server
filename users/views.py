@@ -45,11 +45,9 @@ def registration(request):
         if form.is_valid():
             user = form.save()
             if send_verify_mail(user):
-                print('Сообщение подтверждения отправлено')
                 messages.success(request, 'Вы на правильном пути')
                 return HttpResponseRedirect(reverse('users:login'))
             else:
-                print('Ошибка отправки сообщения')
                 return HttpResponseRedirect(reverse('users:login'))
     else:
         form = UserRegistrationForm()
@@ -71,7 +69,7 @@ def profile(request):
     context = {
         'title': 'GeekShop - Личный кабинет',
         'form': form,
-        'baskets': Basket.objects.filter(user=user)}
+        }
     return render(request, 'users/profile.html', context)
 
 
