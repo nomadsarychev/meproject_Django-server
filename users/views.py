@@ -1,12 +1,13 @@
 from django.conf import settings
 from django.core.mail import send_mail
+from django.db import transaction
 from django.shortcuts import render, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib import auth
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
-from users.form import UserLoginForm, UserRegistrationForm, UserProfileForm
+from users.form import UserLoginForm, UserRegistrationForm, UserProfileForm, UserProfileEditForm
 from baskets.models import Basket
 
 # Контролеры
@@ -55,22 +56,26 @@ def registration(request):
     return render(request, 'users/registration.html', context)
 
 
-@login_required
+@transaction.atomic
+# декаратор следит, если данный записываются  в две модели и в одной запись не прошла произойдет откат и во второй.
 def profile(request):
     user = request.user
     if request.method == 'POST':
-        form = UserProfileForm(instance=user, files=request.FILES, data=request.POST)
-        if form.is_valid():
+        form = UserProfileForm(instance=user, files=request.FILES, data=request.user)
+        profile_form = UserProfileEditForm(data=request.POST, instance=request.user.shopuserprofile)
+        if form.is_valid() and profile_form.is_valid():
             form.save()
             messages.success(request, 'Вы успешно изменили профиль!')
             return HttpResponseRedirect(reverse('users:profile'))
     else:
         form = UserProfileForm(instance=user)
+        profile_form = UserProfileEditForm(instance=request.user.shopuserprofile)
     context = {
         'title': 'GeekShop - Личный кабинет',
         'form': form,
+        'profile_form': profile_form,
         'baskets': Basket.objects.filter(user=user)
-        }
+    }
     return render(request, 'users/profile.html', context)
 
 
@@ -93,4 +98,3 @@ def verify(reqiest, email, activation_key):
     except Exception as err:
         print(f'error activation user {err.args} ')
         return HttpResponseRedirect(reverse('index'))
-

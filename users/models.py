@@ -11,6 +11,7 @@ from django.utils.timezone import now
 # Дополнительные поля для пользователя (дополнение в базовый класс)
 class User(AbstractUser):
     image = models.ImageField(upload_to='users_images', blank=True, null=True)
+    age = models.PositiveIntegerField(verbose_name='возраст', null=True)
 
     activation_key = models.CharField(max_length=128, blank=True)
     activation_key_expires = models.DateTimeField(default=(now() + timedelta(hours=48)))
@@ -23,11 +24,11 @@ class User(AbstractUser):
 
 
 class ShopUserProfile(models.Model):
-    MELE = 'M'
+    MALE = 'M'
     FEMALE = 'W'
 
     GENDER_CHOISES = (
-        (MELE, 'M'),
+        (MALE, 'M'),
         (FEMALE, 'Ж')
     )
 
@@ -58,6 +59,8 @@ class ShopUserProfile(models.Model):
         blank=True,
     )
 
+    # @reciver сигнал который отслеживает изменнеия в одной модели и говорит другой модели: post_save сигнал, sender-модель за которой надо следить
+    # sender класс который отрабатывает,instance обьект в классе который сгенерировал сигнал, created статус события (что делает)
     @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):
         if created:
